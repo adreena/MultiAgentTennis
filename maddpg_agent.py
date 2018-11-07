@@ -5,6 +5,7 @@ from q_network import ActorNetwork,CriticNetwork
 from replay_buffer import ReplayBuffer
 from noise import OUNoise
 from copy import deepcopy
+import torch.nn.functional as F
 
 class MADDPG:
     def __init__(self, num_agents, state_size, action_size, capacity, batch_size, learning_rate, update_rate, gamma, tau, device, seed, epsilon):
@@ -36,13 +37,7 @@ class MADDPG:
         self.noise.reset()
         
     def act(self, states):
-        # state = torch.from_numpy(state)
-        # self.actor.eval()
-        # with torch.no_grad():
-        #     action = self.actor(state).cpu().data.numpy()
-        # self.actor.train()
-        # action += self.noise.sample()
-        # return action
+
         actions = torch.zeros(self.num_agents, self.action_size)
         for agent_idx in range(self.num_agents):
             st = torch.from_numpy(states[agent_idx,:]).float().unsqueeze(dim=0)
@@ -69,24 +64,24 @@ class MADDPG:
         for agent_idx in range(self.num_agents):
             samples = self.memory.sample(self.batch_size, self.device)
             states, actions, rewards, next_states, dones = samples
-            states = states.view(self.batch_size,states.size()[1:])
-            print(states.size(), actions.size(), rewards.size(), next_states.size(), dones.size())
+#             states = states.view(self.batch_size,states.size()[1:])
+#             print(states.size(), actions.size(), rewards.size(), next_states.size(), dones.size())
 
             next_actions = self.actors_target[agent_idx](next_states).squeeze(dim=0)
             q_target_next = self.critics_target[agent_idx](next_states, next_actions)
 
-            print("dones", dones.size())
-            print("q_target_next",q_target_next.size())
+#             print("dones", dones.size())
+#             print("q_target_next",q_target_next.size())
             q_target_val = rewards + self.gamma*q_target_next*(1-dones)
             q_expected_val = self.critics[agent_idx](states, actions)
 
-            critic_loss = F.mse_loss(q_expected_val, q_targte_val)
-            self.critic_optimizer.zero_grad()
+            critic_loss = F.mse_loss(q_expected_val, q_target_val)
+            self.critics_optimizer[agent_idx].zero_grad()
             critic_loss.backward()
-            self.critic_optimizer.step()
+            self.critics_optimizer[agent_idx].step()
             
             actor_preds = self.actors[agent_idx](states)
-            actor_loss = - self.critics[agent_idx](state,actor_preds).mean()
+            actor_loss = - self.critics[agent_idx](states,actor_preds).mean()
             self.actors_optimizer[agent_idx].zero_grad()
             actor_loss.backward()
             self.actors_optimizer[agent_idx].step()
@@ -96,6 +91,4 @@ class MADDPG:
         
     def soft_update(self, target, local):
         for target_param , local_param in zip(target.parameters(), local.parameters()):
-            targey_param.data.copy_(self.tau*local_param.data + (1.0 - self.tau)*target_param.data)
-   
-            
+            target_param.data.copy_(self.tau*local_param.data + (1.0 - self.tau)*target_param.data)
