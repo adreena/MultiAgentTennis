@@ -5,9 +5,8 @@ from q_network import ActorNetwork,CriticNetwork
 from replay_buffer import ReplayBuffer
 from noise import OUNoise
 
-class MADDPG():
-    def __init__(self,state_size, action_size, batch_size, learning_rate, update_rate,
-                 gamma, tau, seed, device):
+class MADDPG:
+    def __init__(self,state_size, action_size, capacity, batch_size, learning_rate, update_rate, gamma, tau, device, seed, epsilon):
         self.state_size = state_size
         self.action_size = action_size
         self.seed = random.seed(seed)
@@ -30,6 +29,9 @@ class MADDPG():
         self.step_ = 0.
         self.gamma = gamma
         self.tau = tau
+        
+    def reset(self):
+        self.noise.reset()
         
     def act(self, state):
         state = torch.from_numpy(state)

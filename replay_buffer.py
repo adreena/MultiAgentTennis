@@ -3,9 +3,11 @@ import numpy as np
 import random
 
 class ReplayBuffer():
-    def __init__(self, capacity):
+    def __init__(self, capacity, seed, device):
         self.buffer = deque(maxlen=capacity)
-        self.experience = nametupe("Experience", field_names=["state", "action", "reward", "next_state", "done"])
+        self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
+        self.seed = seed
+        self.device = device
         
     def sample(self, bacth_size, device):
         experiences = random.sample(self.buffer, k = batch_size)
