@@ -9,7 +9,7 @@ class ReplayBuffer():
         self.seed = seed
         self.device = device
         
-    def sample(self, bacth_size, device):
+    def sample(self, batch_size, device):
         experiences = random.sample(self.buffer, k = batch_size)
         states=torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(device)
         next_states=torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float().to(device)
