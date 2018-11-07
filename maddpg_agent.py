@@ -63,12 +63,20 @@ class MADDPG:
             self.learn()
             
     def learn(self):
+        #st: torch.Size([1, 24])
+        #action: torch.Size([2, 24])
+
         for agent_idx in range(self.num_agents):
             samples = self.memory.sample(self.batch_size, self.device)
             states, actions, rewards, next_states, dones = samples
+            states = states.view(self.batch_size,states.size()[1:])
+            print(states.size(), actions.size(), rewards.size(), next_states.size(), dones.size())
 
-            next_actions = self.actors_target[agent_idx](next_states)
+            next_actions = self.actors_target[agent_idx](next_states).squeeze(dim=0)
             q_target_next = self.critics_target[agent_idx](next_states, next_actions)
+
+            print("dones", dones.size())
+            print("q_target_next",q_target_next.size())
             q_target_val = rewards + self.gamma*q_target_next*(1-dones)
             q_expected_val = self.critics[agent_idx](states, actions)
 
