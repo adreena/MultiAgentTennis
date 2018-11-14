@@ -5,12 +5,12 @@ Size of each action: 2
 There are 2 agents. 
 
 * Number of agents: 2
-* State Space: each observes a state with length: 24
-* Action Space: Each action is a vector with 4 numbers, corresponding to torque applicable to two joints, 
+* State Space: the observation space consists of 8 variables corresponding to the position and velocity of the ball and racket, each agent receives its own, local observation state with length 24
+* Action Space: 2 continuous actions are available, corresponding to movement toward (or away from) the net, and jumping, 
 values in action vector must be a number between -1 and 1
-* Rewards: +0.1 for each step that the agent's hand is in the goal location
-* Goal: acheiving a high accumulated score per episode that is 0.5 average over window of 100 episodes
-
+* Rewards: if agents hit the ball over the net, they receive a reward of +0.1. And if they let a ball hit the ground or hit the ball out of bounds, they receives a reward of -0.01.
+* Goal: the goal of each agent is to keep the ball in play and acheiving a high accumulated score per episode that is 0.5 average over window of 100 episodes
+ 
 ## Background
 
 Recent implementation of “Deep Q Network” (DQN) algorithm has acheived a signficant progress in Reinforcement Learning, resulting in human level performance in playing Atari games.
