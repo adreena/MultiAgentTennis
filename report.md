@@ -22,7 +22,7 @@ This algorithm is fully explained in [Continuous control With Deep Reinforcement
 Here I have implemented a single DDPG agent which acts as a multiagent DDPG by taking in 2 states and generating 2 actions to feed back to the environment,
 at each step, I add a record of <state, action, reward, next_state, done> to the buffer memory of agent and wait for the memory to fill up to the bacth_size before starting to learn from the replay buffer.
 
-Note: I also tried to implement MADDPG as a single agent with a shared memory and shared networks but I coulnd't manage to fix it and left oit for future work.
+Note: I also tried to implement MADDPG as a single agent with a shared memory and shared networks but I coulnd't manage to fix it and left it for future work.
 
 I ran multiple experiments with various configurations, here is the summary of experiments and their results:
 
