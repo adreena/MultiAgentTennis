@@ -103,7 +103,7 @@ Base hyperparameters are:
 ### Conclusion:
 
 The last experiment acheived higher results faster in fewer episodes, this network has only 2 layers with less nodes and it seems to be the best configuration for this environment,
-whereas the other network had more layers with larger hidden nodes.
+whereas the other network had more layers with more set of hidden nodes.
 
 Local networks for this experiments are saved in this repository.
 
