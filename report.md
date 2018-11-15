@@ -82,7 +82,7 @@ Base hyperparameters are:
   * (fc2): Linear(in_features=130, out_features=64, bias=True)
   * (fc3): Linear(in_features=64, out_features=1, bias=True)
 * Best score: 0.5254000079631805
-* Ended in 3733 of episodes.
+* Ended in 3011 of episodes.
 
 <img src="./exp3.png"/>
 ### Conclusion:
