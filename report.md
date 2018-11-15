@@ -1,9 +1,5 @@
 ## Environment
 
-Number of agents: 2
-Size of each action: 2
-There are 2 agents. 
-
 * Number of agents: 2
 * State Space: the observation space consists of 8 variables corresponding to the position and velocity of the ball and racket, each agent receives its own, local observation state with length 24
 * Action Space: 2 continuous actions are available, corresponding to movement toward (or away from) the net, and jumping, 
