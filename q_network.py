@@ -12,43 +12,39 @@ class Actor(nn.Module):
     def __init__(self, state_size, action_size, seed=42):
         super(Actor, self).__init__()
         self.seed = torch.manual_seed(seed)
-#         self.fc1 = nn.Linear(state_size,32)
-#         self.fc2 = nn.Linear(32, 32),
-#         self.fc3 = nn.Linear(32,action_size)
-        
-        self.fc1 = torch.nn.Linear(state_size, 32)
-        self.fc2 = torch.nn.Linear(32, 32)
-        self.fc3 = torch.nn.Linear(32, action_size)
-        
-#         self.model.apply(self.init_weights)
+        hidden_size_1 = 32
+        hidden_size_2 = 32
+#         hidden_size_3 = 32
+#         hidden_size_4 = 16
+        self.fc1 = torch.nn.Linear(state_size, hidden_size_1)
+        self.fc2 = torch.nn.Linear(hidden_size_1, hidden_size_2)
+#         self.fc3 = torch.nn.Linear(hidden_size_2, hidden_size_3)
+#         self.fc4 = torch.nn.Linear(hidden_size_3, hidden_size_4)
+        self.fc5 = torch.nn.Linear(hidden_size_2, action_size)
 
-    def init_weights(self,m):
-        if (type(m) == nn.Linear):
-            nn.init.xavier_uniform_(m.weight)
-            m.bias.data.fill_(1.0)
 
     def forward(self, state):
         output = F.relu(self.fc1(state))
         output = F.relu(self.fc2(output))
-        return torch.tanh(self.fc3(output))
+#         output = F.relu(self.fc3(output))
+#         output = F.relu(self.fc4(output))
+        return torch.tanh(self.fc5(output))
         
     
     
 class Critic(nn.Module):
     """Critic (Value) Model."""
 
-    def __init__(self, state_size , action_size , seed=42, fc_units=[32,32]):
+    def __init__(self, state_size , action_size , seed=42):
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
+        hidden_size_1 = 32
+        hidden_size_2 = 32
         
+        self.fc1 = torch.nn.Linear(state_size, hidden_size_1)
+        self.fc2 = torch.nn.Linear(hidden_size_1+action_size, hidden_size_2)
+        self.fc3 = torch.nn.Linear(hidden_size_2, 1)
         
-        self.fc1 = torch.nn.Linear(state_size, 32)
-        self.fc2 = torch.nn.Linear(32+action_size, 32)
-        self.fc3 = torch.nn.Linear(32, 1)
-        
-#         self.hc_1.apply(self.init_weights)
-#         self.hc_2.apply(self.init_weights)
-
     def forward(self, state, action):
         output = F.relu(self.fc1(state))
         output = torch.cat((output, action), dim=1)
