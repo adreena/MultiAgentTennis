@@ -50,11 +50,3 @@ class Critic(nn.Module):
         output = torch.cat((output, action), dim=1)
         output = F.relu(self.fc2(output))
         return self.fc3(output)
-    
-    def init_weights(self,layer):
-        if (type(layer) == nn.Linear):
-            nn.init.xavier_uniform_(layer.weight)
-            layer.bias.data.fill_(1.0)
-
-
-
