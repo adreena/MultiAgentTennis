@@ -85,6 +85,21 @@ Base hyperparameters are:
 * Ended in 3011 of episodes.
 
 <img src="./exp3.png"/>
+
+### Experiment_ 4 (Best):
+
+* Actor Network:
+  * (fc1): Linear(in_features=24, out_features=32, bias=True)
+  * (fc2): Linear(in_features=32, out_features=32, bias=True)
+  * (fc5): Linear(in_features=32, out_features=2, bias=True)
+* Critic Network:
+  * (fc1): Linear(in_features=24, out_features=32, bias=True)
+  * (fc2): Linear(in_features=34, out_features=32, bias=True)
+  * (fc3): Linear(in_features=32, out_features=1, bias=True)
+* Best score: 0.6010000089555979
+* Ended in 1745 of episodes.
+<img src="./exp4.png"/>
+
 ### Conclusion:
 
 The last experiment acheived higher results faster in fewer episodes, this network has only 2 layers with less nodes and it seems to be the best configuration for this environment,
